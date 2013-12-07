@@ -9,20 +9,11 @@ pr = None
 
 root = os.path.dirname(__file__)
 
-if "win" in sys.platform:
-    develpath = os.path.join(root, "windows", "pyrift", "Release", "pyrift.dll")
-    distpath = os.path.join(root, "pyrift.dll")
-elif "linux" in sys.platform:
-    develpath = os.path.join(root, 'linux', '_pyrift.so')
-    distpath = os.path.join(root, '_pyrift.so')
-else:
-    raise Exception("pyrift not supported on this platform")
-if os.path.isfile(develpath):
-    pr = CDLL(develpath)
-elif os.path.isfile(distpath):
-    pr = CDLL(distpath)
-else:
-    raise Exception("pyrift binary library not found")
+try:
+    pr = CDLL(os.path.join(root, "_pyrift.so"))
+except OSError:
+    pr = CDLL("_pyrift.so")
+    
 
 pr.initialize.argtypes = []
 pr.initialize.restypes = None
@@ -38,5 +29,13 @@ def get_orientation():
     roll = ctypes.c_float()
     pr.get_orientation(ctypes.byref(yaw), ctypes.byref(pitch), ctypes.byref(roll))
     return yaw.value, pitch.value, roll.value
+
+def get_orientation_quaternion():
+    x = ctypes.c_float()
+    y = ctypes.c_float()
+    z = ctypes.c_float()
+    w = ctypes.c_float()
+    pr.get_orientation_quaternion(ctypes.byref(x), ctypes.byref(y), ctypes.byref(z), ctypes.byref(w))
+    return x.value, y.value, z.value, w.value
 
 

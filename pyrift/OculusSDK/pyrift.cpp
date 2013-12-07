@@ -2,6 +2,7 @@
 
 extern "C" void initialize(void);
 extern "C" void get_orientation(float *, float *, float *);
+extern "C" void get_orientation_quaternion(float *, float *, float *, float *);
 
 using namespace OVR;
 
@@ -21,6 +22,14 @@ void initialize(void) {
 void get_orientation(float *yaw, float *pitch, float *roll) {
     Quatf hmdOrient = pSFusion->GetPredictedOrientation();
     hmdOrient.GetEulerAngles<Axis_Y, Axis_X, Axis_Z>(yaw, pitch, roll);
+}
+
+void get_orientation_quaternion(float *x, float *y, float *z, float *w) {
+    Quatf hmdOrient = pSFusion->GetPredictedOrientation();
+    *x = hmdOrient.x;
+    *y = hmdOrient.y;
+    *z = hmdOrient.z;
+    *w = hmdOrient.w;
 }
 
 int main(void) {
