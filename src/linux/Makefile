@@ -9,7 +9,7 @@ CXX	= g++
 all:
 	$(CXX) pyrift.cpp -I LibOVR/Include \
 	LibOVR/Lib/Linux/Release/$(SYSARCH)/libovr.a \
-	-lpthread -ludev -lXinerama -lX11 --shared -fPIC -o ../_pyrift.so
+	-lpthread -ludev -lXinerama -lX11 --shared -fPIC -o ../../pyrift/_pyrift.so
 
 exe:
 	$(CXX) pyrift.cpp -I LibOVR/Include \
@@ -17,4 +17,4 @@ exe:
 	-g -lpthread -ludev -lXinerama -lX11 -fPIC -o pyrift
 
 clean:
-	rm -f ../_pyrift.so ./pyrift
+	rm -f ../../pyrift/_pyrift.so ./pyrift
